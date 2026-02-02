@@ -48,3 +48,30 @@ Templates use bracket notation: `[Field Name]`. The regex pattern `[\[\]]+([^[\]
 
 - `dark-theme.css` - Main dark theme styles
 - `simple.css` - Additional component styles
+
+## Project Documents
+
+- `PLANNING.md` - Strategic roadmap (v1.0 complete, v2.0 SMS, v2.1+ future)
+- `TASKS.md` - Actionable task list derived from planning
+- `PRD.md` - Full product requirements document
+
+## Git Workflow
+
+- `main` - Stable release branch
+- `feature-sms` - Current development branch for v2.0 SMS feature
+- Commits should not include co-author lines
+- Data files (.xlsx, .csv, .pdf, .docx, .txt) are gitignored
+
+## Current State (Session: 2026-02-02)
+
+**Completed this session:**
+- Created CLAUDE.md, PRD.md, PLANNING.md, TASKS.md
+- Initialized git repo, pushed to https://github.com/jweese001/mailbot.git
+- Set up .gitignore for data/document files
+- Created `feature-sms` branch for v2.0 development
+
+**Next steps (v2.0 SMS Feature):**
+1. Start with "Phone Column Support" tasks in TASKS.md
+2. Add `phoneColumn` state variable to SimpleMailBot
+3. Add phone column dropdown to mapping modal
+4. See TASKS.md for full task breakdown
