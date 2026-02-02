@@ -30,15 +30,15 @@ Actionable tasks derived from [PLANNING.md](PLANNING.md).
 - [x] Validate length (10-15 digits)
 
 ### SMS Preview
-- [ ] Add character counter below email preview
-- [ ] Show: `{count}/160 characters` or `{count} characters ({segments} SMS)`
-- [ ] Yellow warning at 140+ chars, red at 160+
-- [ ] Calculate segments: `Math.ceil(count / 153)` for concatenated SMS
+- [x] Add character counter below email preview
+- [x] Show: `{count}/160 characters` or `{count} characters ({segments} SMS)`
+- [x] Yellow warning at 140+ chars, red at 160+
+- [x] Calculate segments: `Math.ceil(count / 153)` for concatenated SMS
 
 ### Validation & Edge Cases
-- [ ] Flag recipients with missing phone numbers
+- [x] Flag recipients with missing phone numbers
 - [x] Disable SMS buttons when no valid phone
-- [ ] Handle phone numbers with extensions (strip extension)
+- [x] Handle phone numbers with extensions (strip extension)
 
 ---
 
