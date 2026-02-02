@@ -14,6 +14,7 @@ class SimpleMailBot {
         this.errorMessage = document.getElementById('error-message');
 
         this.customerEmailEl = document.getElementById('customerEmail');
+        this.customerPhoneEl = document.getElementById('customerPhone');
         this.emailSubjectEl = document.getElementById('emailSubject');
         this.emailPreviewEl = document.getElementById('emailPreview');
         this.customerIndexEl = document.getElementById('customerIndex');
@@ -29,6 +30,7 @@ class SimpleMailBot {
         this.mappingModal = document.getElementById('mappingModal');
         this.mappingContainer = document.getElementById('mappingContainer');
         this.emailColumnSelect = document.getElementById('emailColumnSelect');
+        this.phoneColumnSelect = document.getElementById('phoneColumnSelect');
         this.confirmMappingBtn = document.getElementById('confirmMappingBtn');
 
         // App State
@@ -38,6 +40,7 @@ class SimpleMailBot {
         this.mergeFields = [];
         this.fieldMapping = {};
         this.emailColumn = '';
+        this.phoneColumn = '';
         this.template = ''; // This will now store HTML from the docx
         this.currentIndex = 0;
 
@@ -144,6 +147,14 @@ class SimpleMailBot {
         const autoSelectedEmail = headers.find(h => h.toLowerCase().includes('email'));
         if (autoSelectedEmail) this.emailColumnSelect.value = autoSelectedEmail;
 
+        // Populate and auto-detect phone column
+        this.phoneColumnSelect.innerHTML = `<option value="">-- None (Optional) --</option>` + headers.map(h => `<option value="${h}">${h}</option>`).join('');
+        const autoSelectedPhone = headers.find(h => {
+            const lower = h.toLowerCase();
+            return lower.includes('phone') || lower.includes('mobile') || lower.includes('cell');
+        });
+        if (autoSelectedPhone) this.phoneColumnSelect.value = autoSelectedPhone;
+
         this.mappingContainer.innerHTML = '';
         this.mergeFields.forEach(field => {
             const selectedHeader = this.fieldMapping[field];
@@ -163,6 +174,7 @@ class SimpleMailBot {
 
     finalizeMapping() {
         this.emailColumn = this.emailColumnSelect.value;
+        this.phoneColumn = this.phoneColumnSelect.value;
         if (!this.emailColumn) {
             alert('Please select the column containing email addresses.');
             return;
@@ -190,6 +202,7 @@ class SimpleMailBot {
 
         const customer = this.customers[this.currentIndex];
         const customerEmail = this.emailColumn ? customer[this.emailColumn] : 'No email found';
+        const customerPhone = this.phoneColumn ? customer[this.phoneColumn] : '';
 
         // Customize the HTML template
         let customizedHtml = this.template;
@@ -218,6 +231,14 @@ class SimpleMailBot {
         const subjectInput = document.getElementById('subjectInput');
         const subject = subjectInput.value || 'Important message regarding your Membership';
         this.customerEmailEl.textContent = customerEmail;
+
+        // Display formatted phone number
+        if (customerPhone && this.customerPhoneEl) {
+            this.customerPhoneEl.textContent = this.formatPhoneDisplay(customerPhone);
+            this.customerPhoneEl.parentElement.style.display = 'block';
+        } else if (this.customerPhoneEl) {
+            this.customerPhoneEl.parentElement.style.display = 'none';
+        }
 
         // For email links, convert the customized HTML to plain text
         const plainTextBody = this.emailPreviewEl.innerText || '';
@@ -285,6 +306,22 @@ class SimpleMailBot {
     
     escapeRegex(string) {
         return string.replace(/[.*+?^${}()|[\\]/g, '\\$&');
+    }
+
+    formatPhoneDisplay(phone) {
+        if (!phone) return '';
+        // Strip all non-digit characters
+        const digits = String(phone).replace(/\D/g, '');
+        // Format as (XXX) XXX-XXXX for 10-digit US numbers
+        if (digits.length === 10) {
+            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+        }
+        // Format as +1 (XXX) XXX-XXXX for 11-digit numbers starting with 1
+        if (digits.length === 11 && digits.startsWith('1')) {
+            return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+        }
+        // Return original if not standard US format
+        return phone;
     }
 
     navigate(direction) {

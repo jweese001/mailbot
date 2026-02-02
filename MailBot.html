@@ -62,6 +62,7 @@
                 <div class="review-container">
                     <div class="customer-info">
                         <p><strong>To:</strong> <span id="customerEmail"></span></p>
+                        <p style="display: none;"><strong>Phone:</strong> <span id="customerPhone"></span></p>
                         <p><strong>Subject:</strong> <input type="text" id="subjectInput" class="subject-input" value="Important message regarding your Membership"> <button id="updateSubjectBtn" class="btn btn-secondary subject-update-btn">Update</button></p>
                     <div class="email-preview" id="emailPreview">
                         <!-- Formatted email body will be injected here -->
@@ -106,6 +107,10 @@
             <div class="email-mapping-section">
                 <label for="emailColumnSelect">Which column contains the email addresses?</label>
                 <select id="emailColumnSelect"></select>
+            </div>
+            <div class="email-mapping-section">
+                <label for="phoneColumnSelect">Which column contains phone numbers? (Optional - for SMS)</label>
+                <select id="phoneColumnSelect"></select>
             </div>
             <div id="mappingContainer"></div>
             <button id="confirmMappingBtn" class="btn btn-primary">Confirm & Continue</button>
