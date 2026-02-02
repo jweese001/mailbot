@@ -7,10 +7,10 @@ Actionable tasks derived from [PLANNING.md](PLANNING.md).
 ## v2.0 - SMS Messaging
 
 ### Phone Column Support
-- [ ] Add `phoneColumn` state variable to SimpleMailBot class
-- [ ] Add phone column dropdown to mapping modal (below email selector)
-- [ ] Auto-detect columns containing "phone", "mobile", "cell"
-- [ ] Display phone number in review section: `Phone: (772) 555-1234`
+- [x] Add `phoneColumn` state variable to SimpleMailBot class
+- [x] Add phone column dropdown to mapping modal (below email selector)
+- [x] Auto-detect columns containing "phone", "mobile", "cell"
+- [x] Display phone number in review section: `Phone: (772) 555-1234`
 
 ### Apple Messages Integration
 - [ ] Add "SMS (Messages)" button to action controls div
