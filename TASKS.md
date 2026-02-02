@@ -13,21 +13,21 @@ Actionable tasks derived from [PLANNING.md](PLANNING.md).
 - [x] Display phone number in review section: `Phone: (772) 555-1234`
 
 ### Apple Messages Integration
-- [ ] Add "SMS (Messages)" button to action controls div
-- [ ] Create `generateSmsLink()` method returning `sms:{phone}?body={message}`
-- [ ] Strip HTML tags from message body for SMS
-- [ ] URL-encode message body
+- [x] Add "SMS (Messages)" button to action controls div
+- [x] Create `generateSmsLink()` method returning `sms:{phone}?body={message}`
+- [x] Strip HTML tags from message body for SMS
+- [x] URL-encode message body
 
 ### RingCentral Integration
-- [ ] Add "SMS (RingCentral)" button to action controls div
-- [ ] Create `generateRingCentralLink()` method
-- [ ] Format: `https://app.ringcentral.com/messages/compose?to={phone}&text={message}`
+- [x] Add "SMS (RingCentral)" button to action controls div
+- [x] Create `generateRingCentralLink()` method
+- [x] Format: `https://app.ringcentral.com/messages/compose?to={phone}&text={message}`
 
 ### Phone Number Formatting
-- [ ] Create `formatPhoneForSms()` utility function
-- [ ] Strip all non-digit characters
-- [ ] Add +1 prefix if 10 digits (US number)
-- [ ] Validate length (10-15 digits)
+- [x] Create `formatPhoneForSms()` utility function
+- [x] Strip all non-digit characters
+- [x] Add +1 prefix if 10 digits (US number)
+- [x] Validate length (10-15 digits)
 
 ### SMS Preview
 - [ ] Add character counter below email preview
@@ -37,7 +37,7 @@ Actionable tasks derived from [PLANNING.md](PLANNING.md).
 
 ### Validation & Edge Cases
 - [ ] Flag recipients with missing phone numbers
-- [ ] Disable SMS buttons when no valid phone
+- [x] Disable SMS buttons when no valid phone
 - [ ] Handle phone numbers with extensions (strip extension)
 
 ---
