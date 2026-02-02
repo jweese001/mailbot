@@ -25,6 +25,8 @@ class SimpleMailBot {
         this.outlookLiveBtn = document.getElementById('outlookLiveBtn');
         this.outlookOfficeBtn = document.getElementById('outlookOfficeBtn');
         this.updateSubjectBtn = document.getElementById('updateSubjectBtn');
+        this.smsMessagesBtn = document.getElementById('smsMessagesBtn');
+        this.smsRingCentralBtn = document.getElementById('smsRingCentralBtn');
 
         // Mapping Modal Elements
         this.mappingModal = document.getElementById('mappingModal');
@@ -260,6 +262,20 @@ class SimpleMailBot {
         this.outlookLiveBtn.href = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
         this.outlookOfficeBtn.href = `https://outlook.office.com/mail/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
 
+        // Generate SMS links
+        const hasValidPhone = customerPhone && this.formatPhoneForSms(customerPhone).length >= 10;
+        if (hasValidPhone) {
+            this.smsMessagesBtn.href = this.generateSmsLink(customerPhone, customizedHtml);
+            this.smsRingCentralBtn.href = this.generateRingCentralLink(customerPhone, customizedHtml);
+            this.smsMessagesBtn.classList.remove('disabled');
+            this.smsRingCentralBtn.classList.remove('disabled');
+        } else {
+            this.smsMessagesBtn.href = '#';
+            this.smsRingCentralBtn.href = '#';
+            this.smsMessagesBtn.classList.add('disabled');
+            this.smsRingCentralBtn.classList.add('disabled');
+        }
+
         this.prevBtn.disabled = this.currentIndex === 0;
         this.nextBtn.disabled = this.currentIndex >= this.customers.length - 1;
 
@@ -322,6 +338,43 @@ class SimpleMailBot {
         }
         // Return original if not standard US format
         return phone;
+    }
+
+    formatPhoneForSms(phone) {
+        if (!phone) return '';
+        // Strip all non-digit characters
+        const digits = String(phone).replace(/\D/g, '');
+        // Add +1 prefix for 10-digit US numbers
+        if (digits.length === 10) {
+            return `+1${digits}`;
+        }
+        // Add + prefix for 11-digit numbers starting with 1
+        if (digits.length === 11 && digits.startsWith('1')) {
+            return `+${digits}`;
+        }
+        // Return digits only for other formats
+        return digits;
+    }
+
+    stripHtmlTags(html) {
+        // Create a temporary element to parse HTML and extract text
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        return temp.textContent || temp.innerText || '';
+    }
+
+    generateSmsLink(phone, message) {
+        const formattedPhone = this.formatPhoneForSms(phone);
+        const plainText = this.stripHtmlTags(message);
+        const encodedBody = encodeURIComponent(plainText);
+        return `sms:${formattedPhone}?body=${encodedBody}`;
+    }
+
+    generateRingCentralLink(phone, message) {
+        const formattedPhone = this.formatPhoneForSms(phone);
+        const plainText = this.stripHtmlTags(message);
+        const encodedText = encodeURIComponent(plainText);
+        return `https://app.ringcentral.com/messages/compose?to=${formattedPhone}&text=${encodedText}`;
     }
 
     navigate(direction) {

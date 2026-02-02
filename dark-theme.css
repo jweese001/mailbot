@@ -460,6 +460,24 @@ body {
     box-shadow: var(--shadow-md);
 }
 
+.btn-sms {
+    background: var(--success);
+    color: var(--text-primary-dark);
+}
+
+.btn-sms:hover:not(.disabled) {
+    background: var(--green-400);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-sms.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--slate-700);
+    pointer-events: none;
+}
+
 /* Navigation buttons */
 .navigation-controls .btn {
     background: var(--primary);
