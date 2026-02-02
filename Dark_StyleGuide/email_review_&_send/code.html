@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MAIL BOT - Review Campaign</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex h-screen w-full">
+<!-- Left Column: Recipient List Panel -->
+<aside class="flex w-[320px] shrink-0 flex-col border-r border-gray-200/10 bg-background-light dark:bg-background-dark/50">
+<div class="flex h-full flex-col p-4">
+<div class="flex items-center gap-3 pb-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined !text-2xl">arrow_back</span>
+</div>
+<div class="flex flex-col">
+<h1 class="font-display text-base font-medium text-white">Reviewing: Q4 Update</h1>
+<p class="font-display text-sm text-gray-400">Reviewing 5 of 150</p>
+</div>
+</div>
+<div class="py-3">
+<label class="flex h-11 w-full min-w-40 flex-col">
+<div class="flex h-full w-full flex-1 items-stretch rounded-lg">
+<div class="flex items-center justify-center rounded-l-lg border-r-0 border-none bg-gray-700/50 pl-4 text-gray-400">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input h-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none border-l-0 border-none bg-gray-700/50 px-4 pl-2 font-display text-base font-normal text-white placeholder:text-gray-400 focus:border-none focus:outline-0 focus:ring-0" placeholder="Find a recipient" value=""/>
+</div>
+</label>
+</div>
+<div class="flex-grow space-y-2 overflow-y-auto">
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+<p class="font-display text-sm font-medium">john.doe@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+<p class="font-display text-sm font-medium">jane.smith@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined text-orange-400">redo</span>
+<p class="font-display text-sm font-medium">emily.jones@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined text-red-500">cancel</span>
+<p class="font-display text-sm font-medium">michael.brown@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg bg-primary/20 px-3 py-2 text-white">
+<span class="material-symbols-outlined text-primary">hourglass_empty</span>
+<p class="font-display text-sm font-medium">sarah.davis@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined">hourglass_empty</span>
+<p class="font-display text-sm font-medium">william.clark@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined">hourglass_empty</span>
+<p class="font-display text-sm font-medium">olivia.hall@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined">hourglass_empty</span>
+<p class="font-display text-sm font-medium">james.lee@example.com</p>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5">
+<span class="material-symbols-outlined">hourglass_empty</span>
+<p class="font-display text-sm font-medium">ava.green@example.com</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Column: Email Preview -->
+<main class="flex flex-1 flex-col overflow-y-auto">
+<div class="flex min-h-0 flex-1 flex-col">
+<div class="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+<div class="p-4">
+<div class="grid grid-cols-[15%_1fr] gap-x-6">
+<div class="col-span-2 grid grid-cols-subgrid border-t border-gray-200/10 py-5">
+<p class="font-display text-sm font-normal text-gray-400">To:</p>
+<p class="font-display text-sm font-normal text-white">Sarah Davis &lt;sarah.davis@example.com&gt;</p>
+</div>
+<div class="col-span-2 grid grid-cols-subgrid border-t border-gray-200/10 py-5">
+<p class="font-display text-sm font-normal text-gray-400">From:</p>
+<p class="font-display text-sm font-normal text-white">MAIL BOT &lt;contact@mailbot.com&gt;</p>
+</div>
+<div class="col-span-2 grid grid-cols-subgrid border-b border-t border-gray-200/10 py-5">
+<p class="font-display text-sm font-normal text-gray-400">Subject:</p>
+<p class="font-display text-sm font-normal text-white">Re: Your Weekly Update, Sarah!</p>
+</div>
+</div>
+</div>
+<div class="px-4 py-6">
+<p class="font-display text-base font-normal leading-relaxed text-gray-300">
+                            Hi Sarah,
+                            <br/><br/>
+                            Hope you're having a great week! Here is your personalized weekly update with the latest insights and news tailored just for you. We've included a summary of your account activity and some articles we think you'll find interesting.
+                            <br/><br/>
+                            Let us know if you have any questions.
+                            <br/><br/>
+                            Best,<br/>
+                            The MAIL BOT Team
+                        </p>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="sticky bottom-0 flex items-center justify-between border-t border-gray-200/10 bg-background-dark/80 p-4 backdrop-blur-sm">
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-lg text-gray-400 hover:bg-white/10 hover:text-white">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg text-gray-400 hover:bg-white/10 hover:text-white">
+<span class="material-symbols-outlined">arrow_forward_ios</span>
+</button>
+</div>
+<div class="flex flex-1 justify-end gap-3">
+<button class="flex h-11 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-gray-700/50 px-5 text-base font-bold text-white hover:bg-gray-700/80">
+<span class="material-symbols-outlined !text-xl">edit</span>
+<span class="truncate font-display tracking-[0.015em]">Edit</span>
+</button>
+<button class="flex h-11 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-700/50 px-5 text-base font-bold text-white hover:bg-gray-700/80">
+<span class="truncate font-display tracking-[0.015em]">Skip</span>
+</button>
+<button class="flex h-11 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-5 text-base font-bold text-white hover:bg-primary/90">
+<span class="truncate font-display tracking-[0.015em]">Send &amp; Next</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

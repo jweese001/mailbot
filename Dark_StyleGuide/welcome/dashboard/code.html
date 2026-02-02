@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mail Bot Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#137fec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101922",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-row">
+<!-- SideNavBar -->
+<aside class="flex h-screen min-w-[250px] max-w-[250px] flex-col justify-between border-r border-slate-200/10 bg-[#111a22] p-4">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3 px-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Abstract gradient logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuADRkc4dxYx4iU26QE4XuUy6WCeRheTbWy8hlapzq0MMQ6CkCB9h-Sl4SiIokCL0KrneaWWl-EiBjXkMv_el554ZAogq4CWzDLeBanMJXK-vmciyzAey13rl4L8k7KcTOyO_qfW4Rsd7GjIJtQ4HrfNJ4lj9wYy-B64JfvC7MaLZpViOYNazS5aOrC7ePkefGUbXlNILYLEmZU5ev71rXuzWYs_-gPayvNV4n3h1Q_DcIXwJN56Wsrr0mkBQ4Vx5WPGAV7NnL1Mu6Y");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-medium leading-normal">MAIL BOT</h1>
+<p class="text-slate-400 text-sm font-normal leading-normal">Bulk Emailer</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary" href="#">
+<span class="material-symbols-outlined text-primary">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<p class="text-sm font-medium leading-normal">Campaigns</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium leading-normal">Contacts</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<p class="text-sm font-medium leading-normal">Analytics</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-1"></div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex-col overflow-y-auto">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200/10 px-10 py-3 sticky top-0 bg-background-dark/80 backdrop-blur-sm z-10">
+<div class="flex items-center gap-8">
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Dashboard</h2>
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-slate-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-slate-800 focus:border-none h-full placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search" value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<div class="flex gap-2">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">Start New Campaign</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-slate-800 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-300">notifications</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCf-9A1gFqR5mU_pH0E5otsiefS5msskF2dPe-AD838kxZ5N99-QUtQlUgd6ul4fWi6sybhm__3buMULigQGH-agyw2vwim22KdR15pvonbhedymr12O0nWFIGwaVTNf025VGJr3AKLkPmySktnUE8BXP_DWPuNrp27tDris1z8VzUq51U83I8JAl5roSuxBB7X2zce68WcenTB6l8L8abx7Q7GMIliduo7r0P0unK68-p6x-ylsvOj2vKZweQ8QbGZiep-WoggmPw");'></div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-10">
+<!-- Stats -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="flex flex-col gap-2 rounded-lg p-6 border border-slate-200/10 bg-[#111a22]">
+<p class="text-slate-300 text-base font-medium leading-normal">Total Sent</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">12,450</p>
+<p class="text-green-500 text-base font-medium leading-normal">+2.1%</p>
+</div>
+<div class="flex flex-col gap-2 rounded-lg p-6 border border-slate-200/10 bg-[#111a22]">
+<p class="text-slate-300 text-base font-medium leading-normal">Open Rate</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">28.4%</p>
+<p class="text-red-500 text-base font-medium leading-normal">-0.5%</p>
+</div>
+<div class="flex flex-col gap-2 rounded-lg p-6 border border-slate-200/10 bg-[#111a22]">
+<p class="text-slate-300 text-base font-medium leading-normal">Click Rate</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">4.2%</p>
+<p class="text-green-500 text-base font-medium leading-normal">+0.8%</p>
+</div>
+</div>
+<!-- SectionHeader -->
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-10 pb-4">Recent Campaigns</h2>
+<!-- Table -->
+<div class="@container">
+<div class="flex overflow-hidden rounded-lg border border-slate-200/10 bg-[#111a22]">
+<table class="w-full">
+<thead class="bg-slate-800">
+<tr>
+<th class="table-col-1 px-4 py-3 text-left text-white w-[30%] text-sm font-medium leading-normal">Campaign Name</th>
+<th class="table-col-2 px-4 py-3 text-left text-white w-[15%] text-sm font-medium leading-normal">Status</th>
+<th class="table-col-3 px-4 py-3 text-left text-white w-[15%] text-sm font-medium leading-normal">Date Sent</th>
+<th class="table-col-4 px-4 py-3 text-left text-white w-[15%] text-sm font-medium leading-normal">Recipients</th>
+<th class="table-col-5 px-4 py-3 text-left text-white w-[15%] text-sm font-medium leading-normal">Open Rate</th>
+<th class="table-col-6 px-4 py-3 text-left text-white w-[10%] text-slate-400 text-sm font-medium leading-normal">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-t border-t-slate-200/10 hover:bg-slate-800/50">
+<td class="h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">Q4 Product Update</td>
+<td class="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
+<div class="flex items-center gap-2 text-green-400">
+<div class="w-2 h-2 rounded-full bg-green-400"></div>
+<span>Sent</span>
+</div>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">Dec 12, 2023</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">4,200</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">31.2%</td>
+<td class="h-[72px] px-4 py-2 text-primary text-sm font-bold leading-normal tracking-[0.015em] cursor-pointer hover:underline">View Report</td>
+</tr>
+<tr class="border-t border-t-slate-200/10 hover:bg-slate-800/50">
+<td class="h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">Holiday Sale Promo</td>
+<td class="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
+<div class="flex items-center gap-2 text-yellow-400">
+<div class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></div>
+<span>Sending</span>
+</div>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">Dec 10, 2023</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">8,500</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">12.5%</td>
+<td class="h-[72px] px-4 py-2 text-primary text-sm font-bold leading-normal tracking-[0.015em] cursor-pointer hover:underline">View Report</td>
+</tr>
+<tr class="border-t border-t-slate-200/10 hover:bg-slate-800/50">
+<td class="h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">Weekly Newsletter #42</td>
+<td class="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
+<div class="flex items-center gap-2 text-green-400">
+<div class="w-2 h-2 rounded-full bg-green-400"></div>
+<span>Sent</span>
+</div>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">Dec 8, 2023</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">1,500</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">25.9%</td>
+<td class="h-[72px] px-4 py-2 text-primary text-sm font-bold leading-normal tracking-[0.015em] cursor-pointer hover:underline">View Report</td>
+</tr>
+<tr class="border-t border-t-slate-200/10 hover:bg-slate-800/50">
+<td class="h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">January Onboarding Flow</td>
+<td class="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
+<div class="flex items-center gap-2 text-slate-400">
+<div class="w-2 h-2 rounded-full bg-slate-400"></div>
+<span>Draft</span>
+</div>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">Dec 5, 2023</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">2,150</td>
+<td class="h-[72px] px-4 py-2 text-slate-400 text-sm font-normal leading-normal">N/A</td>
+<td class="h-[72px] px-4 py-2 text-primary text-sm font-bold leading-normal tracking-[0.015em] cursor-pointer hover:underline">Edit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<style>
+            @container(max-width:1024px){.table-col-5, .table-col-4 {display: none;}}
+            @container(max-width:768px){.table-col-3 {display: none;}}
+            @container(max-width:640px){.table-col-2, .table-col-6 {display: none;}}
+          </style>
+</div>
+</div>
+</main>
+</div>
+</body></html>

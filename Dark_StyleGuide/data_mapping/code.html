@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MAIL BOT - Map Your Data</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "component-dark": "#1a2530",
+              "border-dark": "#324d67",
+              "text-primary-dark": "#ffffff",
+              "text-secondary-dark": "#92adc9",
+              "success": "#22c55e",
+              "warning": "#f59e0b"
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary-dark antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="flex h-full grow flex-col">
+<div class="flex flex-1 justify-center py-5 sm:px-6 lg:px-8">
+<div class="flex w-full max-w-5xl flex-col flex-1 px-4">
+<!-- Toolbar -->
+<div class="flex justify-between items-center gap-2 px-4 py-3">
+<div class="flex gap-2 items-center">
+<button class="p-2 text-text-primary-dark">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold">MAIL BOT</h1>
+</div>
+<div class="flex gap-4 items-center">
+<button class="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50">
+<span>Next: Preview Emails</span>
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between">
+<p class="text-text-primary-dark text-base font-medium leading-normal">Step 3 of 5</p>
+</div>
+<div class="rounded-full bg-border-dark h-2">
+<div class="h-2 rounded-full bg-primary" style="width: 60%;"></div>
+</div>
+</div>
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between gap-3 p-4 mt-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-text-primary-dark text-4xl font-black leading-tight tracking-[-0.033em]">Map Your Data</p>
+<p class="text-text-secondary-dark text-base font-normal leading-normal">Drag your spreadsheet columns on the left to match the email placeholders on the right.</p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<main class="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 mt-6">
+<!-- Left Column: Spreadsheet Columns -->
+<div class="flex flex-col gap-4 rounded-xl bg-component-dark p-6 border border-border-dark">
+<h3 class="text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em]">Spreadsheet Columns</h3>
+<div class="flex flex-col gap-3">
+<!-- List Item: Draggable -->
+<div class="flex items-center gap-4 bg-background-dark border border-border-dark rounded-lg px-4 min-h-14 justify-between cursor-grab active:cursor-grabbing">
+<div class="flex items-center gap-4">
+<div class="text-text-primary-dark flex items-center justify-center rounded-lg bg-component-dark shrink-0 size-10">
+<span class="material-symbols-outlined text-2xl">drag_indicator</span>
+</div>
+<p class="text-text-primary-dark text-base font-normal leading-normal flex-1 truncate">firstName</p>
+</div>
+</div>
+<!-- List Item: Draggable -->
+<div class="flex items-center gap-4 bg-background-dark border border-border-dark rounded-lg px-4 min-h-14 justify-between cursor-grab active:cursor-grabbing">
+<div class="flex items-center gap-4">
+<div class="text-text-primary-dark flex items-center justify-center rounded-lg bg-component-dark shrink-0 size-10">
+<span class="material-symbols-outlined text-2xl">drag_indicator</span>
+</div>
+<p class="text-text-primary-dark text-base font-normal leading-normal flex-1 truncate">email</p>
+</div>
+</div>
+<!-- List Item: Draggable -->
+<div class="flex items-center gap-4 bg-background-dark border border-border-dark rounded-lg px-4 min-h-14 justify-between cursor-grab active:cursor-grabbing">
+<div class="flex items-center gap-4">
+<div class="text-text-primary-dark flex items-center justify-center rounded-lg bg-component-dark shrink-0 size-10">
+<span class="material-symbols-outlined text-2xl">drag_indicator</span>
+</div>
+<p class="text-text-primary-dark text-base font-normal leading-normal flex-1 truncate">productName</p>
+</div>
+</div>
+<!-- List Item: Draggable -->
+<div class="flex items-center gap-4 bg-background-dark border border-border-dark rounded-lg px-4 min-h-14 justify-between cursor-grab active:cursor-grabbing">
+<div class="flex items-center gap-4">
+<div class="text-text-primary-dark flex items-center justify-center rounded-lg bg-component-dark shrink-0 size-10">
+<span class="material-symbols-outlined text-2xl">drag_indicator</span>
+</div>
+<p class="text-text-primary-dark text-base font-normal leading-normal flex-1 truncate">company</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Email Placeholders -->
+<div class="flex flex-col gap-4 rounded-xl bg-component-dark p-6 border border-border-dark">
+<div class="flex justify-between items-center">
+<h3 class="text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em]">Email Placeholders</h3>
+<p class="text-sm font-medium text-text-secondary-dark">2 of 3 mapped</p>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Mapped Item: Email (Required) -->
+<div class="flex items-center gap-4 bg-background-dark border border-success rounded-lg p-4 min-h-14 justify-between">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<p class="text-text-primary-dark text-base font-mono leading-normal">{{email}}</p>
+<span class="text-xs font-semibold uppercase tracking-wider text-warning-400 bg-warning/20 px-2 py-0.5 rounded-full text-warning">Required</span>
+</div>
+<div class="flex items-center gap-2 pl-1">
+<span class="material-symbols-outlined text-base text-text-secondary-dark">arrow_right_alt</span>
+<p class="text-primary text-base font-medium">email</p>
+</div>
+</div>
+<div class="shrink-0">
+<div class="text-success flex size-7 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Mapped Item: Recipient Name -->
+<div class="flex items-center gap-4 bg-background-dark border border-success rounded-lg p-4 min-h-14 justify-between">
+<div class="flex-1">
+<p class="text-text-primary-dark text-base font-mono leading-normal mb-1">{{recipient_name}}</p>
+<div class="flex items-center gap-2 pl-1">
+<span class="material-symbols-outlined text-base text-text-secondary-dark">arrow_right_alt</span>
+<p class="text-primary text-base font-medium">firstName</p>
+</div>
+</div>
+<div class="shrink-0">
+<div class="text-success flex size-7 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Unmapped Item (Drop Zone) -->
+<div class="flex flex-col gap-4 border-2 border-dashed border-border-dark rounded-lg p-4 min-h-14 justify-center bg-background-dark/50">
+<p class="text-text-primary-dark text-base font-mono leading-normal">{{product_of_interest}}</p>
+<div class="relative">
+<select class="w-full bg-component-dark border-border-dark rounded-md text-text-primary-dark text-sm focus:ring-primary focus:border-primary">
+<option class="text-text-secondary-dark">Select a column...</option>
+<option>firstName</option>
+<option>email</option>
+<option>productName</option>
+<option>company</option>
+</select>
+</div>
+<p class="text-center text-sm text-text-secondary-dark">or drag a column here</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

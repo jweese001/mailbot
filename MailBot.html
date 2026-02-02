@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Bot - Bulk Email Campaign Manager</title>
+    <link rel="stylesheet" href="dark-theme.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>MAIL BOT</h1>
+            <p>Bulk Email Campaign Manager</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Step 1: Upload -->
+            <section class="upload-section" id="uploadSection">
+                <h2>1. Upload Your Files</h2>
+                <div class="upload-grid">
+                    <!-- DOCX Template Upload -->
+                    <div class="upload-zone">
+                        <h3>DOCX Template</h3>
+                        <div class="drop-zone" id="templateDropZone">
+                            <div class="drop-zone-content">
+                                <p>Drag & drop DOCX or</p>
+                                <button class="browse-btn" onclick="document.getElementById('templateFileInput').click()">Browse</button>
+                                <input type="file" id="templateFileInput" accept=".docx" hidden>
+                            </div>
+                        </div>
+                        <div class="file-status" id="templateFileStatus">No file selected</div>
+                    </div>
+
+                    <!-- Customer Data Upload -->
+                    <div class="upload-zone">
+                        <h3>Customer Data</h3>
+                        <div class="drop-zone" id="dataDropZone">
+                            <div class="drop-zone-content">
+                                <p>Drag & drop CSV/Excel or</p>
+                                <button class="browse-btn" onclick="document.getElementById('dataFileInput').click()">Browse</button>
+                                <input type="file" id="dataFileInput" accept=".csv,.xlsx" hidden>
+                            </div>
+                        </div>
+                        <div class="file-status" id="dataFileStatus">No file selected</div>
+                    </div>
+                </div>
+                <div id="error-message" class="error-message"></div>
+            </section>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+
+            <!-- Step 2: Review & Send -->
+            <section class="review-section" id="reviewSection" style="display: none;">
+                <h2>2. Review & Send</h2>
+                <div class="review-container">
+                    <div class="customer-info">
+                        <p><strong>To:</strong> <span id="customerEmail"></span></p>
+                        <p><strong>Subject:</strong> <input type="text" id="subjectInput" class="subject-input" value="Important message regarding your Membership"> <button id="updateSubjectBtn" class="btn btn-secondary subject-update-btn">Update</button></p>
+                    <div class="email-preview" id="emailPreview">
+                        <!-- Formatted email body will be injected here -->
+                    </div>
+                    <div class="navigation-controls">
+                        <button id="prevBtn" class="btn">Previous</button>
+                        <div class="customer-index" id="customerIndex"></div>
+                        <button id="nextBtn" class="btn">Next</button>
+                    </div>
+                    <div class="action-controls">
+                        <button id="skipBtn" class="btn btn-secondary">Skip</button>
+                        <a id="desktopBtn" href="#" class="btn btn-secondary">Desktop App</a>
+                        <a id="outlookLiveBtn" href="#" target="_blank" class="btn btn-primary">Outlook (Personal)</a>
+                        <a id="outlookOfficeBtn" href="#" target="_blank" class="btn btn-primary">Outlook (Work/School)</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>All processing happens locally in your browser. Your data never leaves your device.</p>
+        </footer>
+    </div>
+
+    <!-- Libraries -->
+    <script src="libs/papaparse.min.js"></script>
+    <script src="libs/xlsx.full.min.js"></script>
+
+    <!-- Application Modules -->
+    <script src="js/utils.js"></script>
+    <script src="js/data-importer.js"></script>
+    <script src="js/message-engine.js"></script>
+    
+    <!-- Main App Controller -->
+    <script src="simple_app.js"></script>
+
+    <!-- Mapping Modal -->
+    <div class="modal-overlay" id="mappingModal" style="display: none;">
+        <div class="modal-content">
+            <h2>Confirm Field Mapping</h2>
+            <p>Please confirm that the DOCX merge fields are correctly matched to your spreadsheet columns.</p>
+            <div class="email-mapping-section">
+                <label for="emailColumnSelect">Which column contains the email addresses?</label>
+                <select id="emailColumnSelect"></select>
+            </div>
+            <div id="mappingContainer"></div>
+            <button id="confirmMappingBtn" class="btn btn-primary">Confirm & Continue</button>
+        </div>
+    </div>
+</body>
+</html>

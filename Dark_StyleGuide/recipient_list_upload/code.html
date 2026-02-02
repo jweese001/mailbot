@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mail Bot - Upload List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full">
+<!-- SideNavBar -->
+<aside class="flex flex-col w-64 bg-[#111a22] p-4 border-r border-gray-800/50">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-2 py-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Abstract blue and white circular logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDcyocINHP0-FOYs5HpQDj56i7b6EUqaNqte8128JnHBzYmqoNN4txrmOrX5X2gwce66RcSQxPzaBVndFcHwX_ZAuwbRVsvj4GWYbyg7ti-6zY3BYOE92m_rZdB8Eufz18icitx14p5Tkd423xqcc-muJ3WRhk4smC81IOFp5vAZ-9SFCqrkqKyXObg6GmDKYC5lripy9kYFmJ_E_LkTbKlI1PAYrZJ9CZPCIltllg1jGyBFK03j6qvhtBN6cKrdH08ae6kTpP3R1Q");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold tracking-wide">MAIL BOT</h1>
+<p class="text-gray-400 text-sm font-normal">Bulk Emailer</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-300">dashboard</span>
+<p class="text-white text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-300">campaign</span>
+<p class="text-white text-sm font-medium">Campaigns</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<p class="text-white text-sm font-medium">Lists</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-300">settings</span>
+<p class="text-white text-sm font-medium">Settings</p>
+</a>
+</nav>
+</div>
+<div class="mt-auto">
+<button class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">New Campaign</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col items-center justify-center p-8">
+<div class="w-full max-w-2xl mx-auto">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2 text-center mb-8">
+<h1 class="text-white text-4xl font-black tracking-tighter">Upload Your Recipient List</h1>
+<p class="text-gray-400 text-base font-normal">Please upload an XLS file with columns for Name and Email.</p>
+</div>
+<!-- Main Content Card -->
+<div class="bg-[#182431] p-6 rounded-xl border border-gray-700/50 shadow-2xl shadow-black/20">
+<!-- State 1: Empty State / Default -->
+<div class="flex flex-col p-4">
+<div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-[#324d67] px-6 py-14 hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-5xl text-gray-500">upload_file</span>
+<div class="flex max-w-md flex-col items-center gap-2">
+<p class="text-white text-lg font-bold tracking-tight text-center">Drag and drop your XLS file here</p>
+<p class="text-gray-400 text-sm font-normal text-center">or click to select a file from your computer</p>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#233648] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#324d67] transition-colors">
+<span class="truncate">Select File</span>
+</button>
+</div>
+</div>
+<!-- State 2: Uploaded File (Hidden by default, for demonstration) -->
+<!-- To view this state, remove the 'hidden' class from the div below and add it to the one above -->
+<div class="hidden">
+<div class="flex items-center justify-between bg-black/20 p-4 rounded-lg border border-gray-700">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center size-12 bg-green-500/10 rounded-lg">
+<span class="material-symbols-outlined text-3xl text-green-400">draft</span>
+</div>
+<div>
+<p class="text-white font-medium">recipients_q3.xls</p>
+<p class="text-gray-400 text-sm">1.2 MB</p>
+</div>
+</div>
+<button class="p-2 rounded-full text-gray-400 hover:bg-white/10 hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Continue Button -->
+<div class="flex px-4 py-6 justify-center">
+<!-- Disabled State -->
+<button class="flex w-full max-w-xs cursor-not-allowed items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-600 text-gray-400 text-base font-bold tracking-[0.015em] opacity-50" disabled="">
+<span class="truncate">Continue</span>
+</button>
+<!-- Enabled State (Hidden by default) -->
+<!-- To view this state, remove the 'hidden' class from the button below and add it to the one above -->
+<button class="hidden flex w-full max-w-xs cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">Continue</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>
