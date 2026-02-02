@@ -317,6 +317,11 @@ body {
     font-weight: 600;
 }
 
+.missing-phone {
+    color: var(--warning) !important;
+    font-style: italic;
+}
+
 .subject-input {
     flex: 1;
     padding: var(--spacing-sm) var(--spacing-md);
@@ -371,6 +376,28 @@ body {
 
 .email-preview * {
     font-family: Arial, sans-serif !important;
+}
+
+.sms-char-counter {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--component-dark);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-dark);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-align: right;
+}
+
+.sms-char-counter.warning {
+    background: var(--warning-light);
+    border-color: var(--warning);
+    color: var(--warning);
+}
+
+.sms-char-counter.error {
+    background: var(--error-light);
+    border-color: var(--error);
+    color: var(--error);
 }
 
 .navigation-controls {

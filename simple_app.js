@@ -27,6 +27,8 @@ class SimpleMailBot {
         this.updateSubjectBtn = document.getElementById('updateSubjectBtn');
         this.smsMessagesBtn = document.getElementById('smsMessagesBtn');
         this.smsRingCentralBtn = document.getElementById('smsRingCentralBtn');
+        this.smsCharCounter = document.getElementById('smsCharCounter');
+        this.charCountText = document.getElementById('charCountText');
 
         // Mapping Modal Elements
         this.mappingModal = document.getElementById('mappingModal');
@@ -235,11 +237,21 @@ class SimpleMailBot {
         this.customerEmailEl.textContent = customerEmail;
 
         // Display formatted phone number
-        if (customerPhone && this.customerPhoneEl) {
-            this.customerPhoneEl.textContent = this.formatPhoneDisplay(customerPhone);
-            this.customerPhoneEl.parentElement.style.display = 'block';
-        } else if (this.customerPhoneEl) {
-            this.customerPhoneEl.parentElement.style.display = 'none';
+        if (this.customerPhoneEl) {
+            if (this.phoneColumn) {
+                // Phone column is selected, show the row
+                this.customerPhoneEl.parentElement.style.display = 'block';
+                if (customerPhone) {
+                    this.customerPhoneEl.textContent = this.formatPhoneDisplay(customerPhone);
+                    this.customerPhoneEl.classList.remove('missing-phone');
+                } else {
+                    this.customerPhoneEl.textContent = 'No phone number';
+                    this.customerPhoneEl.classList.add('missing-phone');
+                }
+            } else {
+                // No phone column selected, hide the row
+                this.customerPhoneEl.parentElement.style.display = 'none';
+            }
         }
 
         // For email links, convert the customized HTML to plain text
@@ -275,6 +287,9 @@ class SimpleMailBot {
             this.smsMessagesBtn.classList.add('disabled');
             this.smsRingCentralBtn.classList.add('disabled');
         }
+
+        // Update SMS character counter
+        this.updateSmsCharCounter(plainTextBody, hasValidPhone);
 
         this.prevBtn.disabled = this.currentIndex === 0;
         this.nextBtn.disabled = this.currentIndex >= this.customers.length - 1;
@@ -342,8 +357,10 @@ class SimpleMailBot {
 
     formatPhoneForSms(phone) {
         if (!phone) return '';
+        // Strip extension (x, ext, extension followed by digits)
+        let cleaned = String(phone).replace(/\s*(x|ext\.?|extension)\s*\d+$/i, '');
         // Strip all non-digit characters
-        const digits = String(phone).replace(/\D/g, '');
+        const digits = cleaned.replace(/\D/g, '');
         // Add +1 prefix for 10-digit US numbers
         if (digits.length === 10) {
             return `+1${digits}`;
@@ -375,6 +392,34 @@ class SimpleMailBot {
         const plainText = this.stripHtmlTags(message);
         const encodedText = encodeURIComponent(plainText);
         return `https://app.ringcentral.com/messages/compose?to=${formattedPhone}&text=${encodedText}`;
+    }
+
+    updateSmsCharCounter(message, showCounter) {
+        if (!this.smsCharCounter || !this.charCountText) return;
+
+        if (!showCounter) {
+            this.smsCharCounter.style.display = 'none';
+            return;
+        }
+
+        const charCount = message.length;
+        this.smsCharCounter.style.display = 'block';
+
+        // Reset classes
+        this.smsCharCounter.classList.remove('warning', 'error');
+
+        if (charCount <= 160) {
+            // Single SMS
+            this.charCountText.textContent = `${charCount}/160 characters`;
+            if (charCount >= 140) {
+                this.smsCharCounter.classList.add('warning');
+            }
+        } else {
+            // Concatenated SMS (153 chars per segment due to headers)
+            const segments = Math.ceil(charCount / 153);
+            this.charCountText.textContent = `${charCount} characters (${segments} SMS)`;
+            this.smsCharCounter.classList.add('error');
+        }
     }
 
     navigate(direction) {
