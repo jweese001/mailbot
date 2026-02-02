@@ -21,9 +21,10 @@
             <section class="upload-section" id="uploadSection">
                 <h2>1. Upload Your Files</h2>
                 <div class="upload-grid">
-                    <!-- DOCX Template Upload -->
+                    <!-- Email Template Upload -->
                     <div class="upload-zone">
-                        <h3>DOCX Template</h3>
+                        <h3>Email Template</h3>
+                        <p class="upload-hint">DOCX format</p>
                         <div class="drop-zone" id="templateDropZone">
                             <div class="drop-zone-content">
                                 <p>Drag & drop DOCX or</p>
@@ -34,9 +35,24 @@
                         <div class="file-status" id="templateFileStatus">No file selected</div>
                     </div>
 
+                    <!-- SMS Template Upload -->
+                    <div class="upload-zone">
+                        <h3>SMS Template</h3>
+                        <p class="upload-hint">DOCX format (optional)</p>
+                        <div class="drop-zone" id="smsTemplateDropZone">
+                            <div class="drop-zone-content">
+                                <p>Drag & drop DOCX or</p>
+                                <button class="browse-btn" onclick="document.getElementById('smsTemplateFileInput').click()">Browse</button>
+                                <input type="file" id="smsTemplateFileInput" accept=".docx" hidden>
+                            </div>
+                        </div>
+                        <div class="file-status" id="smsTemplateFileStatus">No file selected</div>
+                    </div>
+
                     <!-- Customer Data Upload -->
                     <div class="upload-zone">
                         <h3>Customer Data</h3>
+                        <p class="upload-hint">CSV or Excel</p>
                         <div class="drop-zone" id="dataDropZone">
                             <div class="drop-zone-content">
                                 <p>Drag & drop CSV/Excel or</p>
@@ -64,24 +80,46 @@
                         <p><strong>To:</strong> <span id="customerEmail"></span></p>
                         <p style="display: none;"><strong>Phone:</strong> <span id="customerPhone"></span></p>
                         <p><strong>Subject:</strong> <input type="text" id="subjectInput" class="subject-input" value="Important message regarding your Membership"> <button id="updateSubjectBtn" class="btn btn-secondary subject-update-btn">Update</button></p>
-                    <div class="email-preview" id="emailPreview">
-                        <!-- Formatted email body will be injected here -->
                     </div>
-                    <div class="sms-char-counter" id="smsCharCounter" style="display: none;">
-                        <span id="charCountText"></span>
+
+                    <!-- Preview Columns -->
+                    <div class="preview-columns">
+                        <!-- Email Preview Section -->
+                        <div class="preview-section preview-email" id="emailPreviewSection">
+                            <h3 class="preview-header">Email Preview</h3>
+                            <div class="email-preview" id="emailPreview">
+                                <!-- Formatted email body will be injected here -->
+                            </div>
+                        </div>
+
+                        <!-- SMS Preview Section -->
+                        <div class="preview-section preview-sms" id="smsPreviewSection" style="display: none;">
+                            <h3 class="preview-header">SMS Preview</h3>
+                            <div class="sms-preview" id="smsPreview">
+                                <!-- Plain text SMS content will be injected here -->
+                            </div>
+                            <div class="sms-char-counter" id="smsCharCounter">
+                                <span id="charCountText"></span>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="navigation-controls">
                         <button id="prevBtn" class="btn">Previous</button>
                         <div class="customer-index" id="customerIndex"></div>
                         <button id="nextBtn" class="btn">Next</button>
                     </div>
                     <div class="action-controls">
-                        <button id="skipBtn" class="btn btn-secondary">Skip</button>
-                        <a id="desktopBtn" href="#" class="btn btn-secondary">Desktop App</a>
-                        <a id="outlookLiveBtn" href="#" target="_blank" class="btn btn-primary">Outlook (Personal)</a>
-                        <a id="outlookOfficeBtn" href="#" target="_blank" class="btn btn-primary">Outlook (Work/School)</a>
-                        <a id="smsMessagesBtn" href="#" class="btn btn-sms disabled">SMS (Messages)</a>
-                        <a id="smsRingCentralBtn" href="#" target="_blank" class="btn btn-sms disabled">SMS (RingCentral)</a>
+                        <div class="send-buttons-row">
+                            <a id="outlookLiveBtn" href="#" target="_blank" class="btn btn-primary btn-sm">Outlook (Personal)</a>
+                            <a id="outlookOfficeBtn" href="#" target="_blank" class="btn btn-primary btn-sm">Outlook (Work)</a>
+                            <a id="smsMessagesBtn" href="#" class="btn btn-sms btn-sm disabled">SMS (Messages)</a>
+                            <a id="smsRingCentralBtn" href="#" target="_blank" class="btn btn-sms btn-sm disabled">SMS (RingCentral)</a>
+                        </div>
+                        <div class="secondary-buttons-row">
+                            <button id="skipBtn" class="btn btn-secondary btn-sm">Skip</button>
+                            <a id="desktopBtn" href="#" class="btn btn-secondary btn-sm">Desktop App</a>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -6,10 +6,13 @@ class SimpleMailBot {
         this.reviewSection = document.getElementById('reviewSection');
         this.loadingSpinner = document.getElementById('loadingSpinner');
         this.templateDropZone = document.getElementById('templateDropZone');
+        this.smsTemplateDropZone = document.getElementById('smsTemplateDropZone');
         this.dataDropZone = document.getElementById('dataDropZone');
         this.templateFileInput = document.getElementById('templateFileInput');
+        this.smsTemplateFileInput = document.getElementById('smsTemplateFileInput');
         this.dataFileInput = document.getElementById('dataFileInput');
         this.templateFileStatus = document.getElementById('templateFileStatus');
+        this.smsTemplateFileStatus = document.getElementById('smsTemplateFileStatus');
         this.dataFileStatus = document.getElementById('dataFileStatus');
         this.errorMessage = document.getElementById('error-message');
 
@@ -17,6 +20,9 @@ class SimpleMailBot {
         this.customerPhoneEl = document.getElementById('customerPhone');
         this.emailSubjectEl = document.getElementById('emailSubject');
         this.emailPreviewEl = document.getElementById('emailPreview');
+        this.emailPreviewSection = document.getElementById('emailPreviewSection');
+        this.smsPreviewEl = document.getElementById('smsPreview');
+        this.smsPreviewSection = document.getElementById('smsPreviewSection');
         this.customerIndexEl = document.getElementById('customerIndex');
         this.prevBtn = document.getElementById('prevBtn');
         this.nextBtn = document.getElementById('nextBtn');
@@ -38,14 +44,18 @@ class SimpleMailBot {
         this.confirmMappingBtn = document.getElementById('confirmMappingBtn');
 
         // App State
-        this.templateFile = null;
+        this.templateFile = null;      // Email template file
+        this.smsTemplateFile = null;   // SMS template file
         this.dataFile = null;
         this.customers = [];
-        this.mergeFields = [];
+        this.mergeFields = [];         // Combined merge fields from both templates
+        this.emailMergeFields = [];    // Fields from email template
+        this.smsMergeFields = [];      // Fields from SMS template
         this.fieldMapping = {};
         this.emailColumn = '';
         this.phoneColumn = '';
-        this.template = ''; // This will now store HTML from the docx
+        this.template = '';            // Email template HTML
+        this.smsTemplate = '';         // SMS template HTML
         this.currentIndex = 0;
 
         // Modules
@@ -61,8 +71,10 @@ class SimpleMailBot {
 
     setupEventListeners() {
         this.templateFileInput.addEventListener('change', (e) => this.handleFileSelect(e, 'template'));
+        this.smsTemplateFileInput.addEventListener('change', (e) => this.handleFileSelect(e, 'smsTemplate'));
         this.dataFileInput.addEventListener('change', (e) => this.handleFileSelect(e, 'data'));
         this.setupDropZone(this.templateDropZone, (file) => this.handleFileDrop(file, 'template'));
+        this.setupDropZone(this.smsTemplateDropZone, (file) => this.handleFileDrop(file, 'smsTemplate'));
         this.setupDropZone(this.dataDropZone, (file) => this.handleFileDrop(file, 'data'));
         this.prevBtn.addEventListener('click', () => this.navigate(-1));
         this.nextBtn.addEventListener('click', () => this.navigate(1));
@@ -94,13 +106,19 @@ class SimpleMailBot {
             this.templateFile = file;
             this.templateFileStatus.textContent = file.name;
             this.templateFileStatus.classList.add('loaded');
+        } else if (type === 'smsTemplate') {
+            this.smsTemplateFile = file;
+            this.smsTemplateFileStatus.textContent = file.name;
+            this.smsTemplateFileStatus.classList.add('loaded');
         } else if (type === 'data') {
             this.dataFile = file;
             this.dataFileStatus.textContent = file.name;
             this.dataFileStatus.classList.add('loaded');
         }
 
-        if (this.templateFile && this.dataFile) {
+        // At least one template + data required to proceed
+        const hasAtLeastOneTemplate = this.templateFile || this.smsTemplateFile;
+        if (hasAtLeastOneTemplate && this.dataFile) {
             this.startProcessing();
         }
     }
@@ -111,19 +129,35 @@ class SimpleMailBot {
         this.errorMessage.textContent = '';
 
         try {
-            // 1. Process the DOCX template file
-            const arrayBuffer = await this.templateFile.arrayBuffer();
-            const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
-            this.template = result.value; // The generated HTML
-            const textForParsing = result.value.replace(/<[^>]+>/g, ' '); // Plain text for field extraction
-            this.mergeFields = [...new Set(textForParsing.match(/[\[\]]+([^[\]]+)[\[\]]+/g) || [])];
+            // 1. Process the Email DOCX template file (if provided)
+            this.emailMergeFields = [];
+            if (this.templateFile) {
+                const arrayBuffer = await this.templateFile.arrayBuffer();
+                const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                this.template = result.value;
+                const textForParsing = result.value.replace(/<[^>]+>/g, ' ');
+                this.emailMergeFields = [...new Set(textForParsing.match(/[\[\]]+([^[\]]+)[\[\]]+/g) || [])];
+            }
 
-            // 2. Process the data file
+            // 2. Process the SMS DOCX template file (if provided)
+            this.smsMergeFields = [];
+            if (this.smsTemplateFile) {
+                const smsArrayBuffer = await this.smsTemplateFile.arrayBuffer();
+                const smsResult = await mammoth.convertToHtml({ arrayBuffer: smsArrayBuffer });
+                this.smsTemplate = smsResult.value;
+                const smsTextForParsing = smsResult.value.replace(/<[^>]+>/g, ' ');
+                this.smsMergeFields = [...new Set(smsTextForParsing.match(/[\[\]]+([^[\]]+)[\[\]]+/g) || [])];
+            }
+
+            // 3. Combine merge fields from both templates (deduplicated)
+            this.mergeFields = [...new Set([...this.emailMergeFields, ...this.smsMergeFields])];
+
+            // 4. Process the data file
             const dataResult = await this.dataImporter.importFile(this.dataFile);
             if (!dataResult.success) throw new Error(dataResult.error);
             this.customers = dataResult.data;
 
-            // 3. Proceed to mapping
+            // 5. Proceed to mapping
             this.autoMapFields();
             this.displayMappingModal();
 
@@ -205,41 +239,53 @@ class SimpleMailBot {
         }
 
         const customer = this.customers[this.currentIndex];
-        const customerEmail = this.emailColumn ? customer[this.emailColumn] : 'No email found';
+        const customerEmail = this.emailColumn ? customer[this.emailColumn] : '';
         const customerPhone = this.phoneColumn ? customer[this.phoneColumn] : '';
 
-        // Customize the HTML template
-        let customizedHtml = this.template;
+        // Determine content sources based on loaded templates
+        const hasEmailTemplate = !!this.template;
+        const hasSmsTemplate = !!this.smsTemplate;
+
+        // Determine which content to use for email and SMS
+        let emailTemplateSource = this.template || this.smsTemplate;
+        let smsTemplateSource = this.smsTemplate || this.template;
+
+        // Customize the email template
+        let customizedEmailHtml = emailTemplateSource;
         for (const field in this.fieldMapping) {
             const value = customer[this.fieldMapping[field]] || '';
-            customizedHtml = customizedHtml.replace(new RegExp(this.escapeRegex(field), 'g'), value);
+            customizedEmailHtml = customizedEmailHtml.replace(new RegExp(this.escapeRegex(field), 'g'), value);
         }
 
-        // Post-process HTML to remove link formatting and ensure inline text
-        let processedHtml = customizedHtml;
+        // Customize the SMS template
+        let customizedSmsHtml = smsTemplateSource;
+        for (const field in this.fieldMapping) {
+            const value = customer[this.fieldMapping[field]] || '';
+            customizedSmsHtml = customizedSmsHtml.replace(new RegExp(this.escapeRegex(field), 'g'), value);
+        }
 
-        // Remove link tags but keep the text content
-        processedHtml = processedHtml.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1');
-
-        // Remove any span tags that might be causing formatting issues
-        processedHtml = processedHtml.replace(/<span[^>]*>(.*?)<\/span>/gi, '$1');
-
-        // Ensure proper paragraph structure
-        processedHtml = processedHtml.replace(/<p[^>]*>/gi, '<p>');
+        // Post-process email HTML
+        let processedEmailHtml = customizedEmailHtml;
+        processedEmailHtml = processedEmailHtml.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1');
+        processedEmailHtml = processedEmailHtml.replace(/<span[^>]*>(.*?)<\/span>/gi, '$1');
+        processedEmailHtml = processedEmailHtml.replace(/<p[^>]*>/gi, '<p>');
 
         // Apply Arial font to the email content
-        const emailWithFont = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">${processedHtml}</div>`;
-        this.emailPreviewEl.innerHTML = emailWithFont; // Render HTML in the preview
+        const emailWithFont = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">${processedEmailHtml}</div>`;
+        this.emailPreviewEl.innerHTML = emailWithFont;
+
+        // Convert SMS template to plain text
+        const smsPlainText = this.stripHtmlTags(customizedSmsHtml);
+        this.smsPreviewEl.textContent = smsPlainText;
 
         // Get the subject from the input field or use default
         const subjectInput = document.getElementById('subjectInput');
         const subject = subjectInput.value || 'Important message regarding your Membership';
-        this.customerEmailEl.textContent = customerEmail;
+        this.customerEmailEl.textContent = customerEmail || 'No email';
 
         // Display formatted phone number
         if (this.customerPhoneEl) {
             if (this.phoneColumn) {
-                // Phone column is selected, show the row
                 this.customerPhoneEl.parentElement.style.display = 'block';
                 if (customerPhone) {
                     this.customerPhoneEl.textContent = this.formatPhoneDisplay(customerPhone);
@@ -249,13 +295,17 @@ class SimpleMailBot {
                     this.customerPhoneEl.classList.add('missing-phone');
                 }
             } else {
-                // No phone column selected, hide the row
                 this.customerPhoneEl.parentElement.style.display = 'none';
             }
         }
 
-        // For email links, convert the customized HTML to plain text
-        const plainTextBody = this.emailPreviewEl.innerText || '';
+        // Show/hide preview sections based on phone column being selected
+        const showSmsPreview = !!this.phoneColumn;
+        this.emailPreviewSection.style.display = 'block';
+        this.smsPreviewSection.style.display = showSmsPreview ? 'block' : 'none';
+
+        // For email links, convert the email HTML to plain text
+        const emailPlainTextBody = this.emailPreviewEl.innerText || '';
 
         // Find the column for the customer's name from the mapping
         const nameField = Object.keys(this.fieldMapping).find(f => f.toLowerCase().includes('name'));
@@ -263,22 +313,39 @@ class SimpleMailBot {
         const customerName = nameColumn ? customer[nameColumn] : '';
 
         // Format the 'to' field as "Full Name <email@email.com>"
-        const toField = customerName ? `${customerName} <${customerEmail}>` : customerEmail;
+        const toField = customerName && customerEmail ? `${customerName} <${customerEmail}>` : customerEmail;
 
-        // Generate links
-        const encodedSubject = encodeURIComponent(subject);
-        const encodedBody = encodeURIComponent(plainTextBody);
-        const encodedTo = encodeURIComponent(toField);
-
-        this.desktopBtn.href = `mailto:${encodedTo}?subject=${encodedSubject}&body=${encodedBody}`;
-        this.outlookLiveBtn.href = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
-        this.outlookOfficeBtn.href = `https://outlook.office.com/mail/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
-
-        // Generate SMS links
+        // Check contact info for button enabling
+        const hasValidEmail = customerEmail && customerEmail.includes('@');
         const hasValidPhone = customerPhone && this.formatPhoneForSms(customerPhone).length >= 10;
+
+        // Generate email links
+        if (hasValidEmail) {
+            const encodedSubject = encodeURIComponent(subject);
+            const encodedBody = encodeURIComponent(emailPlainTextBody);
+            const encodedTo = encodeURIComponent(toField);
+
+            this.desktopBtn.href = `mailto:${encodedTo}?subject=${encodedSubject}&body=${encodedBody}`;
+            this.outlookLiveBtn.href = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
+            this.outlookOfficeBtn.href = `https://outlook.office.com/mail/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
+
+            this.desktopBtn.classList.remove('disabled');
+            this.outlookLiveBtn.classList.remove('disabled');
+            this.outlookOfficeBtn.classList.remove('disabled');
+        } else {
+            this.desktopBtn.href = '#';
+            this.outlookLiveBtn.href = '#';
+            this.outlookOfficeBtn.href = '#';
+
+            this.desktopBtn.classList.add('disabled');
+            this.outlookLiveBtn.classList.add('disabled');
+            this.outlookOfficeBtn.classList.add('disabled');
+        }
+
+        // Generate SMS links - use SMS-specific content
         if (hasValidPhone) {
-            this.smsMessagesBtn.href = this.generateSmsLink(customerPhone, customizedHtml);
-            this.smsRingCentralBtn.href = this.generateRingCentralLink(customerPhone, customizedHtml);
+            this.smsMessagesBtn.href = this.generateSmsLink(customerPhone, customizedSmsHtml);
+            this.smsRingCentralBtn.href = this.generateRingCentralLink(customerPhone, customizedSmsHtml);
             this.smsMessagesBtn.classList.remove('disabled');
             this.smsRingCentralBtn.classList.remove('disabled');
         } else {
@@ -289,7 +356,7 @@ class SimpleMailBot {
         }
 
         // Update SMS character counter
-        this.updateSmsCharCounter(plainTextBody, hasValidPhone);
+        this.updateSmsCharCounter(smsPlainText, showSmsPreview);
 
         this.prevBtn.disabled = this.currentIndex === 0;
         this.nextBtn.disabled = this.currentIndex >= this.customers.length - 1;
@@ -302,7 +369,18 @@ class SimpleMailBot {
         if (this.currentIndex < 0 || this.currentIndex >= this.customers.length) return;
 
         const customer = this.customers[this.currentIndex];
-        const customerEmail = this.emailColumn ? customer[this.emailColumn] : 'No email found';
+        const customerEmail = this.emailColumn ? customer[this.emailColumn] : '';
+
+        // Check if we have a valid email
+        const hasValidEmail = customerEmail && customerEmail.includes('@');
+        if (!hasValidEmail) {
+            // Visual feedback
+            this.updateSubjectBtn.textContent = 'Updated!';
+            setTimeout(() => {
+                this.updateSubjectBtn.textContent = 'Update';
+            }, 1500);
+            return;
+        }
 
         // Get the current subject from the input field
         const subjectInput = document.getElementById('subjectInput');
@@ -318,7 +396,7 @@ class SimpleMailBot {
 
         // Format the 'to' field as "Full Name <email@email.com>"
         const toField = customerName ? `${customerName} <${customerEmail}>` : customerEmail;
-        
+
         // Generate updated links
         const encodedSubject = encodeURIComponent(subject);
         const encodedBody = encodeURIComponent(plainTextBody);
@@ -440,10 +518,15 @@ class SimpleMailBot {
         if(message) this.errorMessage.textContent = `Error: ${message}`;
 
         this.templateFile = null;
+        this.smsTemplateFile = null;
         this.dataFile = null;
+        this.template = '';
+        this.smsTemplate = '';
         this.templateFileStatus.textContent = 'No file selected';
+        this.smsTemplateFileStatus.textContent = 'No file selected';
         this.dataFileStatus.textContent = 'No file selected';
         this.templateFileStatus.classList.remove('loaded');
+        this.smsTemplateFileStatus.classList.remove('loaded');
         this.dataFileStatus.classList.remove('loaded');
     }
 }
