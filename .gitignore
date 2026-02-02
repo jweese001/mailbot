@@ -15,7 +15,7 @@
 *.doc
 *.docx
 *.pages
-Gemini_Revised_Email.txt
+*.txt
 
 # Backup files
 *.backup
