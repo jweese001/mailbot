@@ -9,7 +9,9 @@
 
 # Data files (contain customer PII)
 *.xlsx
+*.xls
 *.csv
+*.pdf
 
 # Email template files
 *.docx
