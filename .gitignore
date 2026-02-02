@@ -7,13 +7,12 @@
 *.swp
 *.swo
 
-# Data files (contain customer PII)
-*.xlsx
+# Data and document files
 *.xls
+*.xlsx
 *.csv
 *.pdf
-
-# Email template files
+*.doc
 *.docx
 *.pages
 Gemini_Revised_Email.txt
