@@ -330,6 +330,17 @@ body {
     font-style: italic;
 }
 
+.phone-link {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.phone-link:hover {
+    color: var(--text-primary-dark);
+    text-decoration: underline;
+}
+
 .subject-input {
     flex: 1;
     padding: var(--spacing-xs) var(--spacing-sm);

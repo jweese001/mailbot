@@ -253,14 +253,16 @@ class SimpleMailBot {
         // Customize the email template
         let customizedEmailHtml = emailTemplateSource;
         for (const field in this.fieldMapping) {
-            const value = customer[this.fieldMapping[field]] || '';
+            const rawValue = customer[this.fieldMapping[field]];
+            const value = this.formatFieldValue(rawValue, field);
             customizedEmailHtml = customizedEmailHtml.replace(new RegExp(this.escapeRegex(field), 'g'), value);
         }
 
         // Customize the SMS template
         let customizedSmsHtml = smsTemplateSource;
         for (const field in this.fieldMapping) {
-            const value = customer[this.fieldMapping[field]] || '';
+            const rawValue = customer[this.fieldMapping[field]];
+            const value = this.formatFieldValue(rawValue, field);
             customizedSmsHtml = customizedSmsHtml.replace(new RegExp(this.escapeRegex(field), 'g'), value);
         }
 
@@ -283,15 +285,17 @@ class SimpleMailBot {
         const subject = subjectInput.value || 'Important message regarding your Membership';
         this.customerEmailEl.textContent = customerEmail || 'No email';
 
-        // Display formatted phone number
+        // Display formatted phone number as clickable tel: link
         if (this.customerPhoneEl) {
             if (this.phoneColumn) {
                 this.customerPhoneEl.parentElement.style.display = 'block';
                 if (customerPhone) {
-                    this.customerPhoneEl.textContent = this.formatPhoneDisplay(customerPhone);
+                    const displayPhone = this.formatPhoneDisplay(customerPhone);
+                    const telPhone = this.formatPhoneForSms(customerPhone);
+                    this.customerPhoneEl.innerHTML = `<a href="tel:${telPhone}" class="phone-link">${displayPhone}</a>`;
                     this.customerPhoneEl.classList.remove('missing-phone');
                 } else {
-                    this.customerPhoneEl.textContent = 'No phone number';
+                    this.customerPhoneEl.innerHTML = 'No phone number';
                     this.customerPhoneEl.classList.add('missing-phone');
                 }
             } else {
@@ -415,6 +419,49 @@ class SimpleMailBot {
     
     escapeRegex(string) {
         return string.replace(/[.*+?^${}()|[\\]/g, '\\$&');
+    }
+
+    isDateField(fieldName) {
+        const dateKeywords = ['date', 'expir', 'due', 'renew', 'birth', 'created', 'updated'];
+        const lower = fieldName.toLowerCase();
+        return dateKeywords.some(keyword => lower.includes(keyword));
+    }
+
+    formatFieldValue(value, fieldName) {
+        if (value === null || value === undefined || value === '') {
+            return '';
+        }
+
+        // Check if this is a date field
+        if (this.isDateField(fieldName)) {
+            // Check if value is an Excel serial date (number between 1 and 100000)
+            const numValue = Number(value);
+            if (!isNaN(numValue) && numValue > 1 && numValue < 100000 && Number.isInteger(numValue) || (typeof value === 'number' && value > 1 && value < 100000)) {
+                // Convert Excel serial date to JavaScript Date
+                // Excel dates are days since 1900-01-01 (with a leap year bug)
+                // 25569 is the number of days between 1900-01-01 and 1970-01-01
+                const date = new Date((numValue - 25569) * 86400000);
+                if (!isNaN(date.getTime())) {
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                }
+            }
+
+            // Try parsing as a regular date string
+            const dateValue = new Date(value);
+            if (!isNaN(dateValue.getTime())) {
+                return dateValue.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        }
+
+        return String(value);
     }
 
     formatPhoneDisplay(phone) {
